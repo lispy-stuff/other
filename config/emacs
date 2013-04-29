@@ -1,0 +1,42 @@
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(add-to-list 'load-path "~/Lisp/tools/slime")
+(require 'slime-autoloads)
+(slime-setup '(slime-fancy))
+(setq font-lock-verbose nil)
+
+(add-to-list 'load-path "~/Ruby/emacs")
+
+(autoload 'ruby-mode "ruby-mode" "Major mode for ruby files" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+
+(global-set-key (kbd "M-i") 'indent-region)
+(global-set-key (kbd "C-<right>") 'previous-multiframe-window)
+(global-set-key (kbd "C-<left>") 'next-multiframe-window)
+(global-set-key (kbd "C-f") 'make-frame-command)
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(current-language-environment "UTF-8")
+ '(default-frame-alist (quote ((menu-bar-lines . 1) (width . 82) (height . 93))))
+ '(global-hl-line-mode t)
+ '(global-linum-mode t)
+ '(indent-tabs-mode nil)
+ '(make-backup-files nil)
+ '(scroll-bar-mode (quote right))
+ '(show-paren-mode t)
+ '(size-indication-mode t)
+ '(tab-width 8)
+ '(visual-line-mode t t)
+ '(blink-cursor-mode nil)
+ '(tool-bar-mode nil))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
