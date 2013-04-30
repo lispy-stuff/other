@@ -1,7 +1,5 @@
 * Lisp
 ** htlm
-*** Return tree of elems from do-html
-**** Use (with-slots ,@attr-names) instead of (let attrs)
-**** Add method (write-html node out)
-***** Specialize for each node type
-**** Remove *out* & *attrs*
+*** Add a-elem attrs
+*** Add htlmc to compile lisp definitions to html
+*** Add more elems

@@ -4,12 +4,6 @@
 (slime-setup '(slime-fancy))
 (setq font-lock-verbose nil)
 
-(add-to-list 'load-path "~/Ruby/emacs")
-
-(autoload 'ruby-mode "ruby-mode" "Major mode for ruby files" t)
-(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
-
 (global-set-key (kbd "M-i") 'indent-region)
 (global-set-key (kbd "C-<right>") 'previous-multiframe-window)
 (global-set-key (kbd "C-<left>") 'next-multiframe-window)

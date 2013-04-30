@@ -1,7 +1,7 @@
 (defpackage core
   (:export assq
            compose
-           defmac dolist-reverse doplist do-while do-with do-until
+           defconst defmac dolist-reverse doplist do-while do-with do-until
            filter flatten
            kw
            let-if
@@ -27,6 +27,10 @@
                       :from-end t
                       :initial-value (apply fn1 args))))
       #'identity))
+
+(defmacro defconst (name value &optional doc)
+  `(defconstant ,name (if (boundp ',name) (symbol-value ',name) ,value)
+     ,@(when doc (list doc))))
 
 (defun flatten (x)
   "Turn X into a flat list"
