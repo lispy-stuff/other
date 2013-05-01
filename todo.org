@@ -1,5 +1,0 @@
-* Lisp
-** htlm
-*** Add a-elem attrs
-*** Add htlmc to compile lisp definitions to html
-*** Add more elems
