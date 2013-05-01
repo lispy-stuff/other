@@ -139,7 +139,12 @@
   translate)
 
 (define-elem a (basic)
-  href)
+  href
+  hreflang
+  media
+  rel
+  target
+  (type :accessor mime-type))
 
 (define-elem body (basic)
   onafterprint
