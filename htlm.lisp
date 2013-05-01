@@ -49,7 +49,10 @@
   (let ((class-name (sym tag '-elem))
         (attr-names (mapcar (lambda (a) (if (consp a) (first a) a)) attrs)))
     `(progn
-       (defclass ,class-name (,@supers)
+       (defclass ,class-name
+           (,@(if supers
+                  (mapcar (lambda (s) (sym s '-elem)) supers)
+                  '(elem)))
          (,@(mapcar (lambda (a)
                       (if (consp a) a `(,a :initform nil :accessor ,a)))
                     attrs)))
@@ -63,10 +66,10 @@
          (mapcar (lambda (a) (cons (kw a) (slot-value elem a)))
                  '(,@attr-names))))))
 
-(define-elem html (elem)
+(define-elem html ()
   manifest)
 
-(define-elem basic (elem)
+(define-elem basic ()
   accesskey 
   (class :accessor css-class)
   contenteditable
@@ -135,10 +138,10 @@
   title
   translate)
 
-(define-elem a (basic-elem)
+(define-elem a (basic)
   href)
 
-(define-elem body (basic-elem)
+(define-elem body (basic)
   onafterprint
   onbeforeprint
   onbeforeunload
@@ -155,35 +158,35 @@
   onstorage
   onundo)
 
-(defmac do-elem (elem attr-names &body body)
+(defmac do-elem (tag &body body)
   `(progn
-     (let ((,$elem ,elem))
+     (let ((,$elem (make-instance ',(sym tag '-elem))))
        (when *stack* (add-child-node (first *stack*) ,$elem))
        (push ,$elem *stack*)
-       (with-slots (,@attr-names) ,$elem
+       (with-slots (,@(symbol-value (sym tag '-attr-names))) ,$elem
          ,@body)
-     (pop *stack*))))
+       (pop *stack*))))
 
 (defmac do-a (href &body body)
-  `(do-elem (make-instance 'a-elem) ,a-attr-names
-       (setf href ,href)
+  `(do-elem a
+     (setf href ,href)
      ,@body))
 
 (defmac do-body (&body body)
-  `(do-elem (make-instance 'body-elem) ,body-attr-names
-       (macrolet ((a (href &body body)
-                    `(do-a ,href ,@body))
-                  (text (content)
-                    `(add-child-node (first *stack*)
-                                     (make-instance 'text-node
-                                                    :content ,content))))
-         ,@body)))
+  `(do-elem body
+     (macrolet ((a (href &body body)
+                  `(do-a ,href ,@body))
+                (text (content)
+                  `(add-child-node (first *stack*)
+                                   (make-instance 'text-node
+                                                  :content ,content))))
+       ,@body)))
 
 (defmac do-html (&body body)
-  `(do-elem (make-instance 'html-elem) ,html-attr-names
-    (macrolet ((body (&body body)
-                 `(do-body ,@body)))
-      ,@body)))
+  `(do-elem html
+     (macrolet ((body (&body body)
+                  `(do-body ,@body)))
+       ,@body)))
 
 (test (:htlm)
   (let ((res (with-output-to-string (out)
